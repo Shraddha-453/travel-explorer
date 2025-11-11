@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Travel Explorer - Discover Your Next Adventure</title>
+    <title>Travel Explorer- Discover Your Next Adventure</title>
     <style>
         * {
             margin: 0;
@@ -12,16 +12,87 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 50%, #ff4757 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
+   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-image: 
+        /* Orange tint overlay */
+        linear-gradient(135deg, 
+            rgba(255, 107, 53, 0.4) 0%, 
+            rgba(247, 147, 30, 0.4) 50%, 
+            rgba(255, 71, 87, 0.4) 100%),
+        /* Actual world map image */
+        url('https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?w=1920&q=80');
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    background-blend-mode: multiply;
+    min-height: 100vh;
+    padding: 20px;
+    position: relative;
+    overflow-x: hidden;
+}
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+/* Location pins overlay - BRIGHT & VISIBLE */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        /* Larger, more visible pins */
+        radial-gradient(circle at 22% 35%, #fff 5px, transparent 5px),
+        radial-gradient(circle at 22% 35%, #ff4757 12px, transparent 12px),
+        radial-gradient(circle at 45% 28%, #fff 5px, transparent 5px),
+        radial-gradient(circle at 45% 28%, #ff4757 12px, transparent 12px),
+        radial-gradient(circle at 68% 32%, #fff 5px, transparent 5px),
+        radial-gradient(circle at 68% 32%, #ff4757 12px, transparent 12px),
+        radial-gradient(circle at 35% 48%, #fff 5px, transparent 5px),
+        radial-gradient(circle at 35% 48%, #ff4757 12px, transparent 12px),
+        radial-gradient(circle at 78% 38%, #fff 5px, transparent 5px),
+        radial-gradient(circle at 78% 38%, #ff4757 12px, transparent 12px),
+        radial-gradient(circle at 58% 58%, #fff 5px, transparent 5px),
+        radial-gradient(circle at 58% 58%, #ff4757 12px, transparent 12px);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    z-index: 1;
+    pointer-events: none;
+    animation: pinPulse 3s ease-in-out infinite;
+}
+
+@keyframes pinPulse {
+    0%, 100% { 
+        opacity: 0.9;
+        transform: scale(1);
+    }
+    50% { 
+        opacity: 1;
+        transform: scale(1.1);
+    }
+}
+
+/* Traveling plane */
+.travel-plane {
+    position: fixed;
+    font-size: 32px;
+    z-index: 2;
+    pointer-events: none;
+    animation: flyAround 25s linear infinite;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 1));
+}
+
+@keyframes flyAround {
+    0% { top: 35%; left: 20%; transform: rotate(0deg); }
+    25% { top: 28%; left: 45%; transform: rotate(45deg); }
+    50% { top: 32%; left: 70%; transform: rotate(90deg); }
+    75% { top: 50%; left: 40%; transform: rotate(180deg); }
+    100% { top: 35%; left: 20%; transform: rotate(360deg); }
+}
+
+.container {
+    position: relative;
+    z-index: 3;
+}
 
         header {
             text-align: center;
@@ -33,7 +104,7 @@
         h1 {
             font-size: 3em;
             margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            text-shadow: 2px 2px 4px rgba(245, 237, 4, 0.578);
         }
 
         .subtitle {
@@ -352,7 +423,184 @@
             opacity: 0.9;
         }
 
-        @keyframes fadeIn {
+        /* FAMOUS SPOTS SECTION - NEW CSS STARTS HERE */
+        .famous-spots-section {
+            background: white;
+            border-radius: 15px;
+            padding: 40px 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+            animation: slideUp 1s ease-out;
+        }
+
+        .spots-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .spot-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .spot-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)
+        }
+
+        .spot-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .spot-icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+
+        .spot-name {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .spot-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .spot-type {
+            display: inline-block;
+            background: #ff6b35;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        /* FOOD SECTIONS - NEW CSS */
+        .food-section {
+            background: white;
+            border-radius: 15px;
+            padding: 40px 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+            animation: slideUp 1s ease-out;
+        }
+
+        .food-section.affordable {
+            border-top: 5px solid #28a745;
+        }
+
+        .food-section.luxury {
+            border-top: 5px solid #ffd700;
+        }
+
+        .food-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .food-card {
+            background: white;
+            border-radius: 12px;
+            padding: 0;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .food-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+        }
+
+        .food-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .food-content {
+            padding: 20px;
+        }
+
+        .food-name {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .food-cuisine {
+            color: #ff6b35;
+            font-weight: 600;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+
+        .food-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            font-size: 0.95em;
+        }
+
+        .food-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+
+        .food-price {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #28a745;
+        }
+
+        .food-section.luxury .food-price {
+            color: #ffd700;
+        }
+
+        .food-rating {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .food-rating .stars {
+            color: #ffc107;
+            font-size: 1.1em;
+        }
+
+        .food-rating .rating-text {
+            color: #666;
+            font-size: 0.9em;
+        }
+        /* NEW CSS ENDS HERE */
+
+       @keyframes fadeIn {
             from {
                 opacity: 0;
             }
@@ -393,9 +641,10 @@
     </style>
 </head>
 <body>
+    
     <div class="container">
         <header>
-            <h1>🌍 Travel Explorer</h1>
+            <h1>🌍 FindYourHorizon</h1>
             <p class="subtitle">One stop to discover destinations, weather, and inspiration for your next vacation or adventure!</p>
         </header>
 
@@ -444,7 +693,29 @@
                 <div class="photos-grid" id="photosGrid"></div>
             </div>
         </div>
-           
+
+         <!-- FAMOUS SPOTS SECTION - NEW CODE STARTS HERE -->
+            <div class="famous-spots-section">
+                <h2 class="section-title">🗼 Famous Places to Visit in <span id="spotsDestName"></span></h2>
+                <div class="spots-grid" id="spotsGrid"></div>
+            </div>
+
+            <!-- AFFORDABLE FOOD SECTION - NEW CODE -->
+            <div class="food-section affordable">
+                <h2 class="section-title">🍕 Affordable Food Places in <span id="affordableDestName"></span></h2>
+                <div class="food-grid" id="affordableFoodGrid"></div>
+            </div>
+
+            <!-- LUXURY DINING SECTION - NEW CODE -->
+            <div class="food-section luxury">
+                <h2 class="section-title">🍽️ Luxury Dining in <span id="luxuryDestName"></span></h2>
+                <div class="food-grid" id="luxuryFoodGrid"></div>
+            </div>
+            <!-- NEW CODE ENDS HERE -->
+
+        </div>
+
+       
         <!-- Featured Destinations Section -->
         <div class="featured-section">
             <h2 class="featured-title">🌟 Featured Destinations & Adventures</h2>
@@ -549,6 +820,145 @@
             Tornado: '🌪️'
         };
 
+    // FAMOUS SPOTS DATABASE - NEW CODE STARTS HERE
+        const famousSpots = {
+            'Paris': [
+                { icon: '🗼', name: 'Eiffel Tower', description: 'Iconic iron lattice tower and symbol of France', type: 'Landmark' },
+                { icon: '🏛️', name: 'Louvre Museum', description: 'World\'s largest art museum and historic monument', type: 'Museum' },
+                { icon: '⛪', name: 'Notre-Dame Cathedral', description: 'Medieval Catholic cathedral with Gothic architecture', type: 'Religious' },
+                { icon: '🎨', name: 'Sacré-Cœur', description: 'Stunning basilica atop Montmartre hill', type: 'Religious' },
+                { icon: '🌳', name: 'Champs-Élysées', description: 'Famous avenue with shops, cafes, and Arc de Triomphe', type: 'Street' },
+                { icon: '🎭', name: 'Moulin Rouge', description: 'Historic cabaret known for French cancan', type: 'Entertainment' }
+            ],
+            'Tokyo': [
+                { icon: '🗼', name: 'Tokyo Tower', description: 'Communications tower with observation decks', type: 'Landmark' },
+                { icon: '⛩️', name: 'Senso-ji Temple', description: 'Ancient Buddhist temple in Asakusa', type: 'Religious' },
+                { icon: '🏯', name: 'Imperial Palace', description: 'Residence of Japan\'s Imperial Family', type: 'Historical' },
+                { icon: '🌸', name: 'Shibuya Crossing', description: 'World\'s busiest pedestrian crossing', type: 'Urban' },
+                { icon: '🎌', name: 'Meiji Shrine', description: 'Shinto shrine in forested area', type: 'Religious' },
+                { icon: '🗻', name: 'Tokyo Skytree', description: 'Tallest structure in Japan', type: 'Landmark' }
+            ],
+            'New York': [
+                { icon: '🗽', name: 'Statue of Liberty', description: 'Iconic symbol of freedom and democracy', type: 'Monument' },
+                { icon: '🏙️', name: 'Empire State Building', description: 'Art Deco skyscraper with observation deck', type: 'Landmark' },
+                { icon: '🌉', name: 'Brooklyn Bridge', description: 'Historic suspension bridge', type: 'Bridge' },
+                { icon: '🌳', name: 'Central Park', description: 'Urban park in Manhattan', type: 'Park' },
+                { icon: '🎭', name: 'Times Square', description: 'Bright lights and Broadway theaters', type: 'Entertainment' },
+                { icon: '🏛️', name: 'Metropolitan Museum', description: 'Largest art museum in the US', type: 'Museum' }
+            ],
+            'London': [
+                { icon: '🏰', name: 'Tower of London', description: 'Historic castle and former royal residence', type: 'Historical' },
+                { icon: '🎡', name: 'London Eye', description: 'Giant Ferris wheel on South Bank', type: 'Landmark' },
+                { icon: '🏛️', name: 'British Museum', description: 'World-famous museum of human history', type: 'Museum' },
+                { icon: '👑', name: 'Buckingham Palace', description: 'Official residence of the British monarch', type: 'Royal' },
+                { icon: '🌉', name: 'Tower Bridge', description: 'Iconic bascule bridge over Thames', type: 'Bridge' },
+                { icon: '⛪', name: 'Westminster Abbey', description: 'Gothic abbey church and coronation site', type: 'Religious' }
+            ],
+            'Dubai': [
+                { icon: '🏢', name: 'Burj Khalifa', description: 'Tallest building in the world', type: 'Landmark' },
+                { icon: '🏝️', name: 'Palm Jumeirah', description: 'Artificial archipelago', type: 'Island' },
+                { icon: '🏛️', name: 'Dubai Mall', description: 'World\'s largest shopping mall', type: 'Shopping' },
+                { icon: '⛱️', name: 'Jumeirah Beach', description: 'Beautiful white sand beach', type: 'Beach' },
+                { icon: '🕌', name: 'Sheikh Zayed Mosque', description: 'Grand mosque with stunning architecture', type: 'Religious' },
+                { icon: '🎢', name: 'Dubai Marina', description: 'Waterfront development with skyscrapers', type: 'Urban' }
+            ],
+            'Bali': [
+                { icon: '⛩️', name: 'Tanah Lot Temple', description: 'Sea temple on rock formation', type: 'Religious' },
+                { icon: '🌾', name: 'Tegalalang Rice Terrace', description: 'Famous rice paddies with beautiful landscape', type: 'Nature' },
+                { icon: '🏖️', name: 'Seminyak Beach', description: 'Trendy beach with surfing and sunsets', type: 'Beach' },
+                { icon: '🐵', name: 'Ubud Monkey Forest', description: 'Nature reserve with playful monkeys', type: 'Nature' },
+                { icon: '🌋', name: 'Mount Batur', description: 'Active volcano with sunrise treks', type: 'Nature' },
+                { icon: '🏯', name: 'Uluwatu Temple', description: 'Clifftop temple with ocean views', type: 'Religious' }
+            ],
+            'Barcelona': [
+                 { icon: '⛪', name: 'Sagrada Família', description: 'Gaudí\'s unfinished masterpiece basilica', type: 'Religious' },
+                 { icon: '🏛️', name: 'Park Güell', description: 'Colorful park with mosaic works', type: 'Park' },
+                 { icon: '🏖️', name: 'Barceloneta Beach', description: 'Popular city beach', type: 'Beach' },
+                 { icon: '🏟️', name: 'Camp Nou', description: 'FC Barcelona\'s iconic stadium', type: 'Sports' },
+                 { icon: '🎨', name: 'Las Ramblas', description: 'Famous tree-lined street', type: 'Street' },
+                 { icon: '🏰', name: 'Gothic Quarter', description: 'Medieval historic center', type: 'Historical' }
+],
+        };
+
+        // AFFORDABLE FOOD PLACES DATABASE
+        const affordableFoodPlaces = {
+            'Paris': [
+                { name: 'L\'As du Fallafel', cuisine: 'Middle Eastern', description: 'Famous falafel sandwiches in the Marais district', price: '€8-12', rating: 4.5, image: 'https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=400&q=80' },
+                { name: 'Breizh Café', cuisine: 'French Crêpes', description: 'Authentic Breton crêpes and galettes', price: '€10-15', rating: 4.6, image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&q=80' },
+                { name: 'Bouillon Chartier', cuisine: 'French', description: 'Historic budget-friendly French bistro', price: '€12-18', rating: 4.3, image: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&q=80' }
+            ],
+            'Tokyo': [
+                { name: 'Ichiran Ramen', cuisine: 'Japanese Ramen', description: 'Private booth ramen experience', price: '¥890-1200', rating: 4.7, image: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=400&q=80' },
+                { name: 'Tsukiji Fish Market', cuisine: 'Seafood', description: 'Fresh sushi and sashimi at market prices', price: '¥1000-2000', rating: 4.8, image: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=400&q=80' },
+                { name: 'Yoshinoya', cuisine: 'Japanese', description: 'Popular beef bowl chain restaurant', price: '¥400-800', rating: 4.2, image: 'https://images.unsplash.com/photo-1555126634-323283e090fa?w=400&q=80' }
+            ],
+            'New York': [
+                { name: 'Joe\'s Pizza', cuisine: 'Italian Pizza', description: 'Classic New York slice since 1975', price: '$3-8', rating: 4.5, image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&q=80' },
+                { name: 'Halal Guys', cuisine: 'Middle Eastern', description: 'Famous street cart chicken and rice', price: '$8-12', rating: 4.6, image: 'https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=400&q=80' },
+                { name: 'Shake Shack', cuisine: 'American Burgers', description: 'Gourmet burgers and shakes', price: '$10-15', rating: 4.4, image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&q=80' }
+            ],
+            'London': [
+                { name: 'Dishoom', cuisine: 'Indian', description: 'Bombay-style cafe with great breakfast', price: '£8-15', rating: 4.7, image: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=400&q=80' },
+                { name: 'Borough Market', cuisine: 'Various', description: 'Historic food market with diverse options', price: '£6-12', rating: 4.6, image: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400&q=80' },
+                { name: 'Flat Iron', cuisine: 'Steakhouse', description: 'Quality steak at affordable prices', price: '£12-20', rating: 4.5, image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=80' }
+            ],
+            'Dubai': [
+                { name: 'Al Mallah', cuisine: 'Lebanese', description: 'Popular late-night shawarma spot', price: 'AED 15-30', rating: 4.4, image: 'https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=400&q=80' },
+                { name: 'Ravi Restaurant', cuisine: 'Pakistani', description: 'Authentic curries and kebabs', price: 'AED 20-40', rating: 4.5, image: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=400&q=80' },
+                { name: 'Bu Qtair', cuisine: 'Seafood', description: 'Simple shack with amazing fried fish', price: 'AED 25-50', rating: 4.6, image: 'https://images.unsplash.com/photo-1580959375944-0155c710cd43?w=400&q=80' }
+            ],
+            'Bali': [
+                { name: 'Warung Biah Biah', cuisine: 'Indonesian', description: 'Local warungs with authentic Balinese food', price: 'IDR 20-50k', rating: 4.6, image: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&q=80' },
+                { name: 'Nasi Ayam Kedewatan', cuisine: 'Indonesian', description: 'Famous chicken rice spot in Ubud', price: 'IDR 15-35k', rating: 4.7, image: 'https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=400&q=80' },
+                { name: 'Warung Mak Beng', cuisine: 'Seafood', description: 'Simple fish soup and rice', price: 'IDR 25-40k', rating: 4.5, image: 'https://images.unsplash.com/photo-1580959375944-0155c710cd43?w=400&q=80' }
+            ],
+            'Barcelona': [
+                { name: 'Els Quatre Gats', cuisine: 'Catalan', description: 'Historic cafe with tapas', price: '€12-18', rating: 4.5, image: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&q=80' },
+                { name: 'Ciudad Condal', cuisine: 'Spanish Tapas', description: 'Busy tapas bar near Passeig de Gràcia', price: '€15-22', rating: 4.6, image: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400&q=80' },
+                { name: 'Can Culleretes', cuisine: 'Traditional Catalan', description: 'Oldest restaurant in Barcelona (1786)', price: '€18-25', rating: 4.4, image: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&q=80' }
+],
+        };
+
+        // LUXURY DINING DATABASE
+        const luxuryDiningPlaces = {
+            'Paris': [
+                { name: 'Le Jules Verne', cuisine: 'French Fine Dining', description: 'Michelin-starred restaurant in Eiffel Tower', price: '€190-250', rating: 4.8, image: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&q=80' },
+                { name: 'L\'Astrance', cuisine: 'Contemporary French', description: 'Three Michelin stars with innovative cuisine', price: '€230-300', rating: 4.9, image: 'https://images.unsplash.com/photo-1551218808-94e220e084d2?w=400&q=80' },
+                { name: 'Le Cinq', cuisine: 'French Haute Cuisine', description: 'Elegant dining at Four Seasons George V', price: '€290-350', rating: 4.9, image: 'https://images.unsplash.com/photo-1559339352-11d035aa65de?w=400&q=80' }
+            ],
+            'Tokyo': [
+                { name: 'Sukiyabashi Jiro', cuisine: 'Sushi', description: 'World-famous three Michelin star sushi', price: '¥40,000-50,000', rating: 5.0, image: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=400&q=80' },
+                { name: 'Narisawa', cuisine: 'Innovative Japanese', description: 'Two Michelin stars, sustainable cuisine', price: '¥30,000-40,000', rating: 4.9, image: 'https://images.unsplash.com/photo-1580822184713-fc5400e7fe10?w=400&q=80' },
+                { name: 'Ryugin', cuisine: 'Modern Kaiseki', description: 'Three Michelin stars with artistic presentation', price: '¥35,000-45,000', rating: 4.9, image: 'https://images.unsplash.com/photo-1579027989536-b7b1f875659b?w=400&q=80' }
+            ],
+            'New York': [
+                { name: 'Eleven Madison Park', cuisine: 'Contemporary American', description: 'Three Michelin stars, plant-based tasting menu', price: '$365', rating: 4.9, image: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&q=80' },
+                { name: 'Le Bernardin', cuisine: 'French Seafood', description: 'Three Michelin stars, finest seafood', price: '$185-235', rating: 4.9, image: 'https://images.unsplash.com/photo-1559339352-11d035aa65de?w=400&q=80' },
+                { name: 'Per Se', cuisine: 'French-American', description: 'Thomas Keller\'s three Michelin star restaurant', price: '$355', rating: 4.8, image: 'https://images.unsplash.com/photo-1551218808-94e220e084d2?w=400&q=80' }
+            ],
+            'London': [
+                { name: 'Restaurant Gordon Ramsay', cuisine: 'French Fine Dining', description: 'Three Michelin stars, impeccable service', price: '£185-220', rating: 4.9, image: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&q=80' },
+                { name: 'The Ledbury', cuisine: 'Contemporary European', description: 'Two Michelin stars in Notting Hill', price: '£170-200', rating: 4.8, image: 'https://images.unsplash.com/photo-1551218808-94e220e084d2?w=400&q=80' },
+                { name: 'Sketch', cuisine: 'French Gastronomy', description: 'Two Michelin stars with artistic ambiance', price: '£110-180', rating: 4.7, image: 'https://images.unsplash.com/photo-1559339352-11d035aa65de?w=400&q=80' }
+            ],
+            'Dubai': [
+                { name: 'Ossiano', cuisine: 'Seafood Fine Dining', description: 'Underwater dining with Michelin star', price: 'AED 750-1000', rating: 4.9, image: 'https://images.unsplash.com/photo-1559339352-11d035aa65de?w=400&q=80' },
+                { name: 'Nobu Dubai', cuisine: 'Japanese-Peruvian', description: 'Celebrity chef restaurant at Atlantis', price: 'AED 600-800', rating: 4.7, image: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=400&q=80' },
+                { name: 'Zuma', cuisine: 'Contemporary Japanese', description: 'Stylish izakaya-style dining', price: 'AED 500-700', rating: 4.8, image: 'https://images.unsplash.com/photo-1580822184713-fc5400e7fe10?w=400&q=80' }
+            ],
+            'Bali': [
+                { name: 'Mozaic', cuisine: 'French-Indonesian Fusion', description: 'Fine dining in lush Ubud setting', price: 'IDR 1.5-2M', rating: 4.8, image: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&q=80' },
+                { name: 'Kubu at Mandapa', cuisine: 'Mediterranean', description: 'Private bamboo cocoons by river', price: 'IDR 2-2.5M', rating: 4.9, image: 'https://images.unsplash.com/photo-1559339352-11d035aa65de?w=400&q=80' },
+                { name: 'Kayuputi', cuisine: 'Contemporary European', description: 'Beachfront fine dining at St. Regis', price: 'IDR 1.8-2.2M', rating: 4.7, image: 'https://images.unsplash.com/photo-1551218808-94e220e084d2?w=400&q=80' }
+            ],
+            'Barcelona': [
+                { name: 'ABaC', cuisine: 'Contemporary Catalan', description: 'Three Michelin stars with innovative tasting menu', price: '€195-245', rating: 4.9, image: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&q=80' },
+                { name: 'Lasarte', cuisine: 'Modern Basque', description: 'Three Michelin stars by Martín Berasategui', price: '€220-280', rating: 4.8, image: 'https://images.unsplash.com/photo-1559339352-11d035aa65de?w=400&q=80' },
+                { name: 'Moments', cuisine: 'Catalan Haute Cuisine', description: 'Two Michelin stars at Mandarin Oriental', price: '€175-225', rating: 4.8, image: 'https://images.unsplash.com/photo-1551218808-94e220e084d2?w=400&q=80' }
+]
+        };
+        // NEW DATABASE CODE ENDS HERE
+
         // Event listeners
         searchBtn.addEventListener('click', () => searchDestination());
         destinationInput.addEventListener('keypress', (e) => {
@@ -601,8 +1011,22 @@
 
                 displayWeather(weatherData);
                 displayPhotos(photosData, destination);
+
+        // NEW: Display famous spots and food places
+        displayFamousSpots(destination);
+        displayAffordableFood(destination);
+        displayLuxuryDining(destination);
+        
+        resultsContainer.classList.remove('hidden');
+        
+        // Smooth scroll to results after loading
+        setTimeout(() => {
+            resultsContainer.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'start' 
+            });
+        }, 300);  
                 
-                resultsContainer.classList.remove('hidden');
             } catch (error) {
                 showError(error.message);
             } finally {
@@ -610,6 +1034,7 @@
             }
         }
 
+    
         async function fetchWeather(destination) {
             const response = await fetch(
                 `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(destination)}&units=metric&appid=${WEATHER_API_KEY}`
@@ -704,6 +1129,127 @@
                 </div>
             `).join('');
         }
+        
+// DISPLAY FAMOUS SPOTS FUNCTION - NEW CODE STARTS HERE
+        function displayFamousSpots(destination) {
+            const spotsGrid = document.getElementById('spotsGrid');
+            const spotsDestName = document.getElementById('spotsDestName');
+            
+            spotsDestName.textContent = destination;
+
+            // Get spots for this city (try exact match first)
+            let spots = famousSpots[destination];
+            
+            // If no exact match, try to find partial match
+            if (!spots) {
+                const cityKey = Object.keys(famousSpots).find(key => 
+                    destination.toLowerCase().includes(key.toLowerCase()) ||
+                    key.toLowerCase().includes(destination.toLowerCase())
+                );
+                spots = cityKey ? famousSpots[cityKey] : null;
+            }
+
+            if (!spots || spots.length === 0) {
+                spotsGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #666;">No famous spots data available for this destination. Try Paris, Tokyo, New York, London, Dubai, or Bali!</p>';
+                return;
+            }
+
+            spotsGrid.innerHTML = spots.map(spot => `
+                <div class="spot-card">
+                    <div class="spot-icon">${spot.icon}</div>
+                    <div class="spot-name">${spot.name}</div>
+                    <div class="spot-description">${spot.description}</div>
+                    <span class="spot-type">${spot.type}</span>
+                </div>
+            `).join('');
+        }
+
+        // DISPLAY AFFORDABLE FOOD FUNCTION
+        function displayAffordableFood(destination) {
+            const foodGrid = document.getElementById('affordableFoodGrid');
+            const destName = document.getElementById('affordableDestName');
+            
+            destName.textContent = destination;
+
+            // Get food places for this city
+            let foods = affordableFoodPlaces[destination];
+            
+            // Try partial match
+            if (!foods) {
+                const cityKey = Object.keys(affordableFoodPlaces).find(key => 
+                    destination.toLowerCase().includes(key.toLowerCase()) ||
+                    key.toLowerCase().includes(destination.toLowerCase())
+                );
+                foods = cityKey ? affordableFoodPlaces[cityKey] : null;
+            }
+
+            if (!foods || foods.length === 0) {
+                foodGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #666;">No affordable food data available. Try Paris, Tokyo, New York, London, Dubai, or Bali!</p>';
+                return;
+            }
+
+            foodGrid.innerHTML = foods.map(food => `
+                <div class="food-card">
+                    <img src="${food.image}" alt="${food.name}" class="food-image" loading="lazy">
+                    <div class="food-content">
+                        <div class="food-name">${food.name}</div>
+                        <div class="food-cuisine">${food.cuisine}</div>
+                        <div class="food-description">${food.description}</div>
+                        <div class="food-details">
+                            <div class="food-price">${food.price}</div>
+                            <div class="food-rating">
+                                <span class="stars">⭐</span>
+                                <span class="rating-text">${food.rating}/5</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // DISPLAY LUXURY DINING FUNCTION
+        function displayLuxuryDining(destination) {
+            const foodGrid = document.getElementById('luxuryFoodGrid');
+            const destName = document.getElementById('luxuryDestName');
+            
+            destName.textContent = destination;
+
+            // Get luxury dining for this city
+            let foods = luxuryDiningPlaces[destination];
+            
+            // Try partial match
+            if (!foods) {
+                const cityKey = Object.keys(luxuryDiningPlaces).find(key => 
+                    destination.toLowerCase().includes(key.toLowerCase()) ||
+                    key.toLowerCase().includes(destination.toLowerCase())
+                );
+                foods = cityKey ? luxuryDiningPlaces[cityKey] : null;
+            }
+
+            if (!foods || foods.length === 0) {
+                foodGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #666;">No luxury dining data available. Try Paris, Tokyo, New York, London, Dubai, or Bali!</p>';
+                return;
+            }
+
+            foodGrid.innerHTML = foods.map(food => `
+                <div class="food-card">
+                    <img src="${food.image}" alt="${food.name}" class="food-image" loading="lazy">
+                    <div class="food-content">
+                        <div class="food-name">${food.name}</div>
+                        <div class="food-cuisine">${food.cuisine}</div>
+                        <div class="food-description">${food.description}</div>
+                        <div class="food-details">
+                            <div class="food-price">${food.price}</div>
+                            <div class="food-rating">
+                                <span class="stars">⭐</span>
+                                <span class="rating-text">${food.rating}/5</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        // NEW FUNCTIONS END HERE
 
         function showLoading() {
             loadingMessage.classList.remove('hidden');
